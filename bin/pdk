@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+PDK_DIRECTORY="$(realpath $(dirname $0)/..)"
+echo "Running PDK from ${PDK_DIRECTORY}..."
+
+COMMAND=$1
+if [ -z "${COMMAND}" ]; then
+  echo "No command to execute given."
+  exit 1
+fi
+
+COMMAND_FILE=${PDK_DIRECTORY}/scripts/${COMMAND}.py
+if [ ! -f "${COMMAND_FILE}" ]; then
+  echo "Command ${COMMAND} does not exist."
+  exit 1
+fi
+
+ARGUMENTS=${@:2}
+
+python3 ${COMMAND_FILE} ${ARGUMENTS}

@@ -1,7 +1,10 @@
 #!/bin/bash
 
 set -e
-set -x
+
+if [ -z "${TRACE}" ]; then
+  set -x
+fi
 
 PDK_DIRECTORY="$(realpath $(dirname $0)/..)"
 echo "Running PDK from ${PDK_DIRECTORY}..."

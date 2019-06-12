@@ -2,11 +2,8 @@ import argparse
 import subprocess
 import os
 import sys
+import pdk.image
 import pdk.image_list
-
-def extract_path(image):
-  index = image.rindex("/")
-  return image[0:index]
 
 parser = argparse.ArgumentParser(description='Download a list of OCI images to a directory.')
 parser.add_argument('--image-list', default='/tmp/pdk-image-list', help='location of the image list (default: /tmp/pdk-image-list)')
@@ -20,11 +17,12 @@ subprocess.check_call(["oc", "apply", "-f", os.path.dirname(sys.argv[0]) + "/../
 
 for image in images:
   print("Extracting image " + image)
-  image_path = extract_path(image)
+  image_path = pdk.image.extract_path(image)
   subprocess.check_call(["oc", "exec", "pdk-download-pod", "--", "mkdir", "-p", "/images/" + image_path])
   subprocess.check_call(["mkdir", "-p", args.image_directory + "/" + image_path])
-
-  subprocess.check_call(["oc", "exec", "pdk-download-pod", "--", "skopeo", "copy", "docker://" + image, "dir://images/" + image_path, "--src-tls-verify=false"])
-  subprocess.check_call(["oc", "rsync", "pdk-download-pod:/images/" + image_path, args.image_directory + "/" + image_path])
-
+  
+  target = "docker-archive://images/" + image_path + pdk.image.extract_name(image) + ".tar"
+  print(target)
+  subprocess.check_call(["oc", "exec", "pdk-download-pod", "--", "skopeo", "copy", "docker://" + image, target, "--src-tls-verify=false"])
+  subprocess.check_call(["oc", "rsync", "pdk-download-pod:/images/" + image_path, args.image_directory])
 subprocess.check_call(["oc", "delete", "pod", "pdk-download-pod"])

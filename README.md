@@ -1,25 +1,32 @@
-# local pipeline development
+# gitlab pipeline development kit (PDK)
 
-## Vorrausetzungen
+**WARNING: This is absolutely alpha quality software. This project is far from having appropriate automatic or manual tests. You have been warned.**
 
-* skopeo
-* minishift
+This is toolkit to run [GitLab CI](https://docs.gitlab.com/ee/ci/) Jobs locally for the purpose of developing and testing the pipeline.
 
-## Projekt vorbereiten
+## Installation
 
-* minikube/minishift starten
-* Projekt für pipeship erstellen oder auschecken
-* pipeline.yaml per Symlink reinlinken: `ln -s  ../ideal-standard-becken/pipeline.yaml .gitlab-ci.yml`
+Please install the [GitLab Runner](https://docs.gitlab.com/runner/) first.
 
-## Images lokal bereitstellen
+Currently there is no installation method for PDK (Would be a great thing for a first PR?). To add the to your path, you can run the following commands:
 
-* herunterladen in Verzeichnis mit skopeo
-* in lokalen Docker Daemon kopieren mit skopeo
+```
+git clone https://github.com/nbyl/gitlab-pdk.git
+cd gitlab-pdk
+export PATH=`pwd`/bin/:$PATH
+```
 
-## Jobs lokal ausführen
+Afterwards you'll be able to run `pdk` commands. If you want to make this permanently, please add `PDK_DIRECTORY/bin` to your path variable.
 
-* `pdk run build_container_image`
-  * KUBECONFIG setzen
-  * ~/.kube/config mounten
-  * Variablen für Artifactory überschreiben
-  * pull-policy never
+## Quickstart
+
+```
+git clone https://gitlab.com/gitlab-examples/nodejs.git
+cd nodejs
+docker pull node:4.2.2
+pdk run test_async
+```
+
+## Offline image caching
+
+TBD.

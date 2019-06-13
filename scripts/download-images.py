@@ -13,7 +13,7 @@ args = parser.parse_args()
 images = pdk.image_list.load(args.image_list)
 
 print("Starting dowload for " + str(len(images)) + " images.")
-subprocess.check_call(["oc", "apply", "-f", os.path.dirname(sys.argv[0]) + "/../kubernetes/download-pod.yaml"])
+#subprocess.check_call(["oc", "apply", "-f", os.path.dirname(sys.argv[0]) + "/../kubernetes/download-pod.yaml"])
 
 for image in images:
   print("Extracting image " + image)

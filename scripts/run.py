@@ -35,8 +35,13 @@ parser = argparse.ArgumentParser(description='Run a gitlab ci job.')
 parser.add_argument("job", help="GitLab CI job to execute.")
 parser.add_argument("--docker-pull-policy", default="never", help="Pull policy for docker images.")
 parser.add_argument("--kubernetes-namespace", default="default", help="The kubernetes namespace to inject.")
-parser.add_argument("--trace", default=False, help="Enable tracing for PDK.")
+parser.add_argument("--env", help="Add environment variable to build.", action='append')
+parser.add_argument("--trace", help="Enable tracing for PDK.", action='store_true')
+
 args = parser.parse_args()
+if (args.trace):
+  print("PDK arguments: ")
+  print(args)
 
 prepare_kubernetes_serviceaccount(args)
 
@@ -50,6 +55,11 @@ cmd_line = [
 ]
 
 prepare_kubernetes_settings(args, cmd_line)
+
+if args.env:
+  for env in args.env:
+    cmd_line.append("--env")
+    cmd_line.append(env)
 
 if args.trace:
   cmd_line.append("--env")

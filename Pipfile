@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 PyYAML = "==5.1"
+click = "*"
 
 [dev-packages]
 pylint = "*"

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import image
+import pdk.image
 
 def test_extract_path(): 
-  assert image.extract_path("demo/postgres:9.6.1") == "demo"
+  assert pdk.image.extract_path("demo/postgres:9.6.1") == "demo"
 
 def test_extract_name(): 
-  assert image.extract_name("demo/postgres:9.6.1@sha1213") == "/postgres:9.6.1"  
+  assert pdk.image.extract_name("demo/postgres:9.6.1@sha1213") == "/postgres:9.6.1"  

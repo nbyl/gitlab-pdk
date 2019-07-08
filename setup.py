@@ -4,11 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pdk-nbyl",
+    name="pdk",
     version="0.0.1",
     author="Nicolas Byl",
     author_email="nico@nicolas-byl.eu",
-    scripts=['bin/pdk'],
     description="A pipeline development kit (PDK) for gitlab pipelines",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -19,4 +18,11 @@ setuptools.setup(
         "License :: OSI Approved :: Apache License",
         "Operating System :: OS Independent",
     ],
+    install_requires=[
+        'click',
+    ],
+    entry_points='''
+        [console_scripts]
+        pdk=pdk.cli:cli
+    ''',
 )

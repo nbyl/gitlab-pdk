@@ -20,7 +20,7 @@ jobs:
       - run:
           command: |
             pipenv run pytest --junit-xml=build/test-results/report.xml --cov=./
-            codecov
+            pipenv run codecov
       - store_test_results: 
           path: build/test-results
       - store_artifacts: 

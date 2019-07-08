@@ -2,15 +2,11 @@ version: 2
 jobs: 
   build: 
     docker:
-      # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
       - image: circleci/python:3.7.3
         environment: # environment variables for primary container
           PIPENV_VENV_IN_PROJECT: true
-          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
     steps:
       - checkout # check out source code to working directory
-#      - run: sudo chown -R circleci:circleci /usr/local/bin
-#      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - restore_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
@@ -21,8 +17,6 @@ jobs:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
-#            - "/usr/local/bin"
-#            - "/usr/local/lib/python3.6/site-packages"
       - run:
           command: |
             pipenv run pytest --junit-xml=build/test-results/report.xml

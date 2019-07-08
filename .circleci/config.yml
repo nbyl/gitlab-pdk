@@ -1,0 +1,27 @@
+version: 2
+jobs: 
+  build: 
+    docker:
+      - image: circleci/python:3.7.3
+        environment: # environment variables for primary container
+          PIPENV_VENV_IN_PROJECT: true
+    steps:
+      - checkout # check out source code to working directory
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run:
+          command: |
+            pip install pipenv
+            pipenv install -d
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+      - run:
+          command: |
+            pipenv run pytest --junit-xml=build/test-results/report.xml
+      - store_test_results: 
+          path: build/test-results
+      - store_artifacts: 
+          path: build/test-results
+          destination: tr1

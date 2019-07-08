@@ -5,10 +5,12 @@ name = "pypi"
 
 [packages]
 PyYAML = "==5.1"
+click = "*"
 
 [dev-packages]
 pylint = "*"
 pytest = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.7"
